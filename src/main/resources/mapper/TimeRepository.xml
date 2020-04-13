@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.schedule.repository.TimeRepository">
+
+    <insert id="insertTimeTask" useGeneratedKeys="true" keyProperty="id">
+        insert into time(createDate,executeDate,cron,executeCount,isRunning,autoRemove)
+        values (#{createDate},#{executeDate},#{cron},#{executeCount},#{isRunning},#{autoRemove})
+    </insert>
+    <delete id="deleteTimeTask">
+        delete from time where id = #{id}
+    </delete>
+    <update id="updateExecuteCount">
+        update time set ${count} = #{args} where id = #{id}
+    </update>
+
+    <select id="getTimeTask" resultType="com.schedule.bean.Time">
+        select * from time where id = #{id}
+    </select>
+
+    <select id="getAllList" resultType="com.schedule.bean.Time">
+        select * from time where isRunning = 1 and (executeDate > now() or cron is not null)
+    </select>
+</mapper>
